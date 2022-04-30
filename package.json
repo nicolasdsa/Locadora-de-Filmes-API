@@ -1,0 +1,25 @@
+{
+  "name": "locadora-de-filmes-api",
+  "version": "1.0.0",
+  "description": "Repositorio para projeto de uma locadora de filmes",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nicolasdsa/Locadora-de-Filmes-API.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/nicolasdsa/Locadora-de-Filmes-API/issues"
+  },
+  "homepage": "https://github.com/nicolasdsa/Locadora-de-Filmes-API#readme",
+  "dependencies": {
+    "body-parser": "^1.20.0",
+    "express": "^4.18.1",
+    "mongodb": "^4.5.0"
+  }
+}
