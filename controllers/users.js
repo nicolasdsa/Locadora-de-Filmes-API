@@ -6,6 +6,11 @@ class UsersController {
     return id;
   }
 
+  static async getUser(email) {
+    const user = await UsersModel.getUser(email);
+    return user;
+  }
+
 }
 
 module.exports = UsersController;

@@ -5,9 +5,22 @@ class UsersModel extends Model {
     super("users");
   }
 
-  async create(){
+  async create(user){
     const id = await this.collection.insertOne(user);
     return id;
+  }
+
+  async getUser(userEmail) {
+    const usersData = await this.collection.find({email: userEmail}).toArray();
+    const users = Object.values(usersData);
+
+    for (const user of users) {
+      if (user.email === userEmail) {
+        return user;
+      }
+    }
+
+    return null;
   }
 
 }
