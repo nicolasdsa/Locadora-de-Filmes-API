@@ -16,4 +16,4 @@ server.listen(3000, async () => {
 
 server.use("/auth", authRouter);
 server.get("/movies", authenticationMiddleware, movies);
-server.patch("/movies_units/:id", movies_units);
+server.patch("/movies_units/:id", authenticationMiddleware, movies_units);
