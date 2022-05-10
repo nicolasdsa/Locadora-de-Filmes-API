@@ -19,18 +19,22 @@ class MoviesModel extends Model {
         if(movie._id.toString() == film.movie_id){
           return film.movie_id;
         }
-      })      
-      return filter
+      }) 
+            
+      const id = filter.map( item => {
+        return item._id.toString();
+      })
+
+      return id
     })
 
-    console.log({order});
+   for(let i = 0; i < movies.length; i++){
+      movies[i]["units"] = [...order[i]]
+   }
 
-    const units = movies;
-    for(let i = 0; i < movies.length; i++){
-      movies[i]["units"] = i;
-    }
-    return units
+    return movies
   }
+
 }
 
 module.exports = new MoviesModel();
