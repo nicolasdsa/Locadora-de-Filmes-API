@@ -7,9 +7,7 @@ class Movies_UnitsModel extends Model {
     super("movie_units");
   }
 
-  async rentMovie(id, user){
-    
-    const userId = user._id.toString();
+  async rentMovie(id, userId){
     const update = await this.collection.updateOne({_id: ObjectId(id)}, {$set: {userId: `${userId}`, return_date: null}});
     return update
   }
@@ -20,6 +18,17 @@ class Movies_UnitsModel extends Model {
     const update = await this.collection.updateOne({_id: ObjectId(id)}, {$set: {return_date: `${now}`, userId: null}});
     return update
   }
+
+  async verifyMovie(id){
+    const movie = await this.collection.findOne({_id: ObjectId(id)});
+    return movie
+  }
+
+  async groupIdMovies(){
+    const group = await this.collection.find({}).toArray();
+    return group;
+  }
+
 }
 
 module.exports = new Movies_UnitsModel();
