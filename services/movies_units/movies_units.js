@@ -34,13 +34,13 @@ const route = async (req, res) => {
 
  if( actionBody == "rent"){
     if(verify.userId){
-      throw ApiError.badRequest("Unauthorized", {});
+      throw ApiError.Unauthorized("Unauthorized", {});
     }
     action = await Movies_UnitsController.rentMovie(req.params.id, userId);
   }
   else if(actionBody == "return"){
     if(verify.userId !== userId){
-      throw ApiError.badRequest("Unauthorized", {});
+      throw ApiError.Unauthorized("Unauthorized", {});
     }
     action = await Movies_UnitsController.returnMovie(req.params.id);
   }

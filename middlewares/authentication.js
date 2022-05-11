@@ -14,7 +14,7 @@ const authentication = (req, res, next) => {
     req.user = decoded;
     return next();
   } catch (err) {
-    return res.status(401).send();
+    return res.status(401).send({message:"Unauthorized"});
   }
 };
 
