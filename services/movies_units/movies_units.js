@@ -2,13 +2,14 @@ const Movies_UnitsController = require("../../controllers/movies_units");
 const Joi = require("joi");
 const jwt = require("jsonwebtoken");
 const UsersController = require("../../controllers/users");
+const ApiError = require("../../utils/apiError");
 
 
 const actionSchema = Joi.object({
   action: Joi.string().required()
 });
 
-const movies_Units = async (req, res) => {
+const route = async (req, res) => {
   const { error, value } = actionSchema.validate(req.body);
 
   if (error) {
@@ -18,8 +19,9 @@ const movies_Units = async (req, res) => {
 
   const verify = await Movies_UnitsController.verifyMovie(req.params.id);
   
+
   if(!verify){
-    return res.status(400).send({message:"Invalid Movie Unit"});
+    throw ApiError.badRequest("Invalid Movie Unit", {});
   }
 
   const token = req.headers.authorization.split(" ")[1];
@@ -30,16 +32,15 @@ const movies_Units = async (req, res) => {
 
   let action
 
-  try{
  if( actionBody == "rent"){
     if(verify.userId){
-      return res.status(401).send({message:"Unauthorized"});
+      throw ApiError.badRequest("Unauthorized", {});
     }
     action = await Movies_UnitsController.rentMovie(req.params.id, userId);
   }
   else if(actionBody == "return"){
     if(verify.userId !== userId){
-      return res.status(401).send({message:"Unauthorized"});
+      throw ApiError.badRequest("Unauthorized", {});
     }
     action = await Movies_UnitsController.returnMovie(req.params.id);
   }
@@ -47,10 +48,7 @@ const movies_Units = async (req, res) => {
   return res.status(200).send({
     success: true,
   });
-  }catch(err){
-    return res.status(400).send(err);
-  }
 
 }
 
-module.exports = movies_Units;
+module.exports = {route, actionSchema};

@@ -20,12 +20,12 @@ class AuthController {
     const user = await UsersController.getUser(email);
 
     if (!user) {
-      throw new Error("Bad Request");
+      throw new Error("Invalid email");
     }
 
     const isValidPassword = bcrypt.compareSync(password, user.password);
     if (!isValidPassword) {
-      throw new Error("Bad Request");
+      throw new Error("Invalid password");
     }
 
     const token = jwt.sign({ id: user.id, email: user.email }, secret);

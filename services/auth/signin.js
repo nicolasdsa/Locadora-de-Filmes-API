@@ -22,7 +22,7 @@ const signin = async (req, res) => {
       token,
     });
   } catch (err) {
-    return res.status(400).send({ message: "Bad Request" });
+    return res.status(400).send({message:"Invalid Email or Password"});
   }
 };
 

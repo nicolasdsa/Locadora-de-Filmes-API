@@ -19,7 +19,7 @@ const signup = async (req, res) => {
   const insertedId = await AuthController.signup(req.body);
 
   return res.status(200).send({
-    success: insertedId,
+    success: true,
   });
 };
 

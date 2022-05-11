@@ -4,6 +4,7 @@ const authRouter = require("./services/auth");
 const movies = require("./services/movies/movies");
 const movies_units = require("./services/movies_units/movies_units");
 const authenticationMiddleware = require("./middlewares/authentication");
+const routeMiddleware = require('./middlewares/route');
 const bodyParser = require("body-parser");
 const database = require("./utils/database");
 
@@ -15,5 +16,5 @@ server.listen(3000, async () => {
 });
 
 server.use("/auth", authRouter);
-server.get("/movies", authenticationMiddleware, movies);
-server.patch("/movies_units/:id", authenticationMiddleware, movies_units);
+server.get("/movies", authenticationMiddleware, routeMiddleware(movies.route));
+server.patch("/movies_units/:id", authenticationMiddleware, routeMiddleware(movies_units.route));

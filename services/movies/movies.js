@@ -1,12 +1,14 @@
 const MoviesController = require("../../controllers/movies");
+const ApiError = require("../../utils/apiError");
 
-const movies = async (req, res) => {
-  const {title, available, limit, skip} = req.query
+const route = async (req, res) => {
+  const {title, available, limit, skip } = req.query
+
 
  const list = await MoviesController.listMovies(title, available);
 
  if((parseInt(limit) + parseInt(skip)) > list.length){
-  return res.status(400).send({message:"Invalid Limit"});
+  throw ApiError.badRequest("Invalid Limit", {});
  }
 
 
@@ -26,4 +28,4 @@ const movies = async (req, res) => {
  res.status(200).send(Viewer);
 }
 
-module.exports = movies;
+module.exports = {route};
