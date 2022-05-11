@@ -16,8 +16,8 @@ class Movies_UnitsController {
     return verify
   }
 
-  async groupIdMovies(){
-    const group = await Movies_UnitsModel.groupIdMovies();
+  async groupIdMovies(available){
+    const group = await Movies_UnitsModel.groupIdMovies(available);
     return group
   }
 }

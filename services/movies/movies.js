@@ -1,22 +1,29 @@
 const MoviesController = require("../../controllers/movies");
 
 const movies = async (req, res) => {
- const list = await MoviesController.listMovies(req.query);
+  const {title, available, limit, skip} = req.query
+
+ const list = await MoviesController.listMovies(title, available);
+
+ if((parseInt(limit) + parseInt(skip)) > list.length){
+  return res.status(400).send({message:"Invalid Limit"});
+ }
 
 
  const copyList = [...list];
- const listSkip = copyList.splice(0, parseInt(req.query.skip));
- const listLimit = copyList.splice(parseInt(req.query.limit), copyList.length);
+ const listSkip = copyList.splice(0, parseInt(skip));
+ const listLimit = copyList.splice(parseInt(limit), copyList.length);
 
  const pagination = {
    total: list.length,
-    skip: parseInt(req.query.skip),
-    limit: parseInt(req.query.limit),
-    isFirstPage: parseInt(req.query.skip) > 0 ? false : true,
-    isLastPage: (parseInt(req.query.skip) + parseInt(req.query.limit)) == list.length ? true : false
+    skip: parseInt(skip),
+    limit: parseInt(limit),
+    isFirstPage: parseInt(skip) > 0 ? false : true,
+    isLastPage: (parseInt(skip) + parseInt(limit)) == list.length ? true : false
  }
  
- res.status(200).send(copyList);
+ const Viewer = {movies:[...copyList], pagination:{...pagination}};
+ res.status(200).send(Viewer);
 }
 
 module.exports = movies;

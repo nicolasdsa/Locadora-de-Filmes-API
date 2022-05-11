@@ -24,8 +24,9 @@ class Movies_UnitsModel extends Model {
     return movie
   }
 
-  async groupIdMovies(){
-    const group = await this.collection.find({}).toArray();
+  async groupIdMovies(available){
+    const isTrueSet = (available === 'true');
+    const group = (isTrueSet) ? await this.collection.find({userId: {$eq:null}}).toArray() : await this.collection.find({}).toArray();
     return group;
   }
 

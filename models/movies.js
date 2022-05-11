@@ -5,8 +5,7 @@ class MoviesModel extends Model {
     super("movies");
   }
 
-  async listMovies(search, group) {
-    const {title, available, limit, skip} = search
+  async listMovies(title, group) {
     const list = await this.collection.find({}).toArray();
     const filterTitle = list.filter(item => item.title.toLowerCase().replaceAll(" ", "").includes(title.toLowerCase().replaceAll(" ", "")));
     const groupMovies = await this.groupMoviesUnitsWithMovies(filterTitle,group);
