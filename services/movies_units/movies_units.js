@@ -25,7 +25,7 @@ const route = async (req, res) => {
   }
 
   const token = req.headers.authorization.split(" ")[1];
-  const {email} =  jwt.verify(token, "t3st4nd0");
+  const {email} =  req.user;
 
   const user = await  UsersController.getUser(email);
   const userId = user._id.toString();
