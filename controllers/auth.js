@@ -1,5 +1,6 @@
 const bcrypt = require("bcryptjs");
 const UsersController = require("./users");
+const ApiError = require("../utils/apiError");
 const jwt = require("jsonwebtoken");
 
 const secret = "t3st4nd0";
@@ -8,6 +9,13 @@ class AuthController {
   static async signup({ name, email, password }) {
     const salt = bcrypt.genSaltSync(12);
     const hash = bcrypt.hashSync(password, salt);
+
+    const verify = await UsersController.getUser(email);
+
+    if(verify){
+      throw ApiError.badRequest("Email is already in use", {});
+    }
+
     const id = await UsersController.create({
       name,
       email,

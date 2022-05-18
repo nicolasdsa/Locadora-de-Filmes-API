@@ -3,40 +3,38 @@ const ApiError = require("../../utils/apiError");
 const Joi = require("joi");
 
 const searchSchema = Joi.object({
-  title: Joi.string().required(),
-  available: Joi.string().min(4).required(),
-  limit: Joi.string().min(1).required(),
-  skip: Joi.string().min(1).required()
+  title: Joi.string().default('').lowercase(),
+  available: Joi.boolean().default(false),
+  limit: Joi.number().default(2),
+  skip: Joi.number().default(0)
 });
 
 const route = async (req, res) => {
 
-  const { error, value } = searchSchema.validate(req.query);
+ const { error, value } = searchSchema.validate(req.query);
 
-  if (error) {
+ if (error) {
     return res.status(400).send(error);
-  }
-
-  const {title, available, limit, skip } = req.query
-
-
+ }
+ const {title, available, limit, skip } = value
+ 
  const list = await MoviesController.listMovies(title, available);
 
- if((parseInt(limit) + parseInt(skip)) > list.length){
+ if((limit + skip) > list.length){
   throw ApiError.badRequest("Invalid Limit", {});
  }
 
 
  const copyList = [...list];
- const listSkip = copyList.splice(0, parseInt(skip));
- const listLimit = copyList.splice(parseInt(limit), copyList.length);
+ const listSkip = copyList.splice(0, skip);
+ const listLimit = copyList.splice(limit, copyList.length);
 
  const pagination = {
    total: list.length,
-    skip: parseInt(skip),
-    limit: parseInt(limit),
-    isFirstPage: parseInt(skip) > 0 ? false : true,
-    isLastPage: (parseInt(skip) + parseInt(limit)) == list.length ? true : false
+    skip: skip,
+    limit: limit,
+    isFirstPage: skip > 0 ? false : true,
+    isLastPage: (skip + limit) == list.length ? true : false
  }
  
  const Viewer = {movies:[...copyList], pagination:{...pagination}};
